@@ -14,7 +14,7 @@ after_success:
   - docker build -t zvyagintsevkr/multi-server ./server
   - docker build -t zvyagintsevkr/multi-worker ./worker
   # log in to the docker CLIkr
-  - echo "$DOCKER_PASSWORD" | docker login --ukrsername "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_ID" --password-stdin
   - docker push zvyagintsevkr/multi-client
   - docker push zvyagintsevkr/multi-nginx 
   - docker push zvyagintsevkr/multi-server
