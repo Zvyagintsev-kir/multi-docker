@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t zvyagintsevkr/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run zvyagintsevkr/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t zvyagintsevkr/multi-client ./client
+  - docker build -t zvyagintsevkr/multi-nginx ./nginx
+  - docker build -t zvyagintsevkr/multi-server ./server
+  - docker build -t zvyagintsevkr/multi-worker ./worker
+  # log in to the docker CLIkr
+  - echo "$DOCKER_PASSWORD" | docker login --ukrsername "$DOCKER_ID" --password-stdin
+  - docker push zvyagintsevkr/multi-client
+  - docker push zvyagintsevkr/multi-nginx 
+  - docker push zvyagintsevkr/multi-server
+  - docker push zvyagintsevkr/multi-worker
+
